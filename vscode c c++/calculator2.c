@@ -1,6 +1,8 @@
-// Здравствуйте,меня зовут Мешалкин Никита.Это мой личный проект,который представляет из себя калькулятор,выполняющий
-// 6 математических операций, с выводом результат и запросом на продолжение работы или прекращение работы программы.
+// / Здравствуйте,меня зовут Мешалкин Никита.Это мой личный проект,который я немного доработал, и представляет он из себя калькулятор,
+// выполняющий уже не только 6 математических операций,но и умеющий работать с векторами и памятью.Так же реализован вывод результата
+// и запрос на продолжение работы программы или её завершение.
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
@@ -8,6 +10,10 @@ int main(int argc, char* argv[])
     double e,t;
     float a,b;
     char c,r;
+    // Объявляем указатели.
+    float *g,*h,*Res;
+    // Так же добалчем переменную для размера векторв.
+    int size;
     // Данные две переменные используются в операциях возведения в степень и нахождение факториала,как начальные значения 
     // в цикле for.
     res=1;
@@ -17,7 +23,8 @@ int main(int argc, char* argv[])
     // Я сделал код таким образом,что сначала надо ввести операцию,чтобы он отправил вас в нужный case и выполнил только то,
     // что в нём находится.Это позволяет более гибко использовать типы.В каждом кейсе прописана своя отдельная маленькая программка,
     // выполняющая какую-либо из операций,присвоенная ей.
-    printf("Enter the operation (+,-,*,/,!,^): ");
+    // s - это от слова sum(сумма); d - это от слова difference(разность); c - это от слова composition(произведение).
+    printf("Enter the operation (+,-,*,/,!,^,s,d,c): ");
     scanf(" %c",&c);
     switch (c)
     {
@@ -86,6 +93,76 @@ int main(int argc, char* argv[])
             }
             break;
         }
+         case('s'):
+         {
+             printf("Enter the size of the vectors: ");
+             scanf(" %i",&size);
+             // Зарезервируем в нашей памяти ячейки под указатели.
+             g = malloc(size*sizeof(int));
+             h = malloc(size*sizeof(int));
+             Res = malloc(size*sizeof(int));
+             printf("Enter the first vector: ");
+             // Создаём цикл,потому что нам неизвестно сколько у вектора будет значений.
+             for (int i=0;i<size;i++)
+                scanf(" %f",&g[i]);
+             printf("Enter the second vector: ");
+             for (int i=0;i<size;i++)
+                scanf(" %f",&h[i]);
+             printf("The result of adding vectors: ");
+             for (int i=0;i<size;i++)
+                printf("%f ",g[i]+h[i]);
+             printf("\n");
+             // Очищаем ранее используемую память,чтобы она не накапливалась и ей могла пользоваться операционная система.
+             free(g);
+             free(h);
+             free(Res);
+             break;
+         }
+         // Все те же самые методы мы используем дальше,только меняем операцию между векторами.
+          case('d'):
+          {
+              printf("Enter the size of the vectors: ");
+             scanf(" %i",&size);
+             g = malloc(size*sizeof(int));
+             h = malloc(size*sizeof(int));
+             Res = malloc(size*sizeof(int));
+             printf("Enter the first vector: ");
+             for (int i=0;i<size;i++)
+                scanf(" %f",&g[i]);
+             printf("Enter the second vector: ");
+             for (int i=0;i<size;i++)
+                scanf(" %f",&h[i]);
+             printf("Result of the vector difference: ");
+             for (int i=0;i<size;i++)
+                printf("%f ",g[i]-h[i]);
+             printf("\n");
+             free(g);
+             free(h);
+             free(Res);
+             break;
+          }
+           case('c'):
+           {
+               printf("Enter the size of the vectors: ");
+             scanf(" %i",&size);
+             g = malloc(size*sizeof(int));
+             h = malloc(size*sizeof(int));
+             Res = malloc(size*sizeof(int));
+             printf("Enter the first vector: ");
+             for (int i=0;i<size;i++)
+                scanf(" %f",&g[i]);
+             printf("Enter the second vector: ");
+             for (int i=0;i<size;i++)
+                scanf(" %f",&h[i]);
+             printf("The result of the product of vectors: ");
+             for (int i=0;i<size;i++)
+                printf("%f ",g[i]*h[i]);
+             printf("\n");
+             free(g);
+             free(h);
+             free(Res);
+             break;
+           }
         }
         // Вы могли заметить,что эти две переменные уже были описаны в начале программы,но не спешите делать поспешных выводов,
         // данный финт ушами сделан для корректной работы операций возведения в степень и нахождения факториала числа.
