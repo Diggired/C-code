@@ -237,3 +237,4 @@ void res_add_el(struct list2 *res_current, struct list1 *current) {
 	z_res->res_next = NULL;
 	res_current->res_next = z_res;
 }
+
