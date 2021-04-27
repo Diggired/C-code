@@ -1,232 +1,239 @@
-// / Здравствуйте,меня зовут Мешалкин Никита.Это мой личный проект,который я немного доработал, и представляет он из себя калькулятор,
-// работающий с файлами.Программа осуществляет ввод из одного файла и вывод в другой файл.Реализован запрос на продолжение работы и ввод других файлов.
-// Это тот же калькулятор,выполняющий 6 математическийх операций и работающий с векторами,только теперь ввод и вывод происходит в файлах.
 #include <stdio.h>
 #include <stdlib.h>
+// Здравствуйте,меня зовут Мешалкин Никита.Это мой личный проект,который я немного доработал, и представляет он из себя калькулятор,
+// использующий списки и файлы.Это тот же калькулятор,выполняющий 6 математическийх операций и работающий с векторами,используя списки и файлы.	
+// Пример работы с обычным калькулятором: + s 2 5 
+// Пример работы с векторным калькялятором: - v 3 5 6 7 9 4 3
+// Есть одна особенность,во входном файле обязательно должна быть свободная строчка после данных.
 
-int main(int argc, char* argv[])
-{
-    long long int d,f,res;
-    double e,t;
-    float a,b;
-    char c,r,input[20],output[20]; // Ограничение на название файла до 20 символов.
-    // Объявляем указатели.
-    float *g,*h,*Res;
-    // Так же добавляем переменную для размера векторв.
-    int size;
-    // Данные две переменные используются в операциях возведения в степень и нахождение факториала,как начальные значения 
-    // в цикле for.
-    res=1;
-    f=1;
-    do
-    {
-        printf("Enter the input \"name.txt\": ");
-        scanf(" %s",&input);
-        printf("Enter the output \"name.txt\": ");
-        scanf(" %s",&output);
-        FILE *in,*out; // Указатели для работы с файлами.
-        in = fopen(input,"r"); // Открываем указанный файл для чтения.
-        out = fopen(output,"a"); // Открываем указанный файл для добавления в него чего-то без удаления прошлого.
-        // Я сделал код таким образом,что сначала надо ввести операцию,чтобы он отправил вас в нужный case и выполнил только то,
-        // что в нём находится.Это позволяет более гибко использовать типы.В каждом кейсе прописана своя отдельная маленькая программка,
-        // выполняющая какую-либо из операций,присвоенная ей.
-        // s - это от слова sum(сумма); d - это от слова difference(разность); c - это от слова composition(произведение).
-        while(feof(in) == 0)
-        {
-            fprintf(out,"Enter the operation (+,-,*,/,!,^,s,d,c): ");
-            fscanf(in," %c",&c);
-            fprintf(out,"%c\n",c);
-            switch (c)
-            {
-                case '+':
-                {
-                    fprintf(out,"Enter the first number: "); // Данная функция работает так же,как и printf только с файлами. Первым параметром она принимает указатель для вывода в файл. 
-                        fscanf(in," %f",&a); // Данная функция работает так же,как и scanf только с файлами. Первым параметром она принимает указатель для чтения из файла. 
-                        fprintf(out,"%f\n",a); // Эта функция считывает из файла ввода значение и выводит его в файл вывода(сделано просто для красоты и понятности).
-                    fprintf(out,"Enter the second number: ");
-                        fscanf(in," %f",&b);
-                        fprintf(out,"%f\n",b);
-                    fprintf(out,"%f + %f = %f\n",a,b,a+b);
-                    fprintf(out,"\n");
-                    break;
-                }
-                case '-':
-                {
-                    fprintf(out,"Enter the first number: ");
-                        fscanf(in," %f",&a);
-                        fprintf(out,"%f\n",a);
-                    fprintf(out,"Enter the second number: ");
-                        fscanf(in," %f",&b);
-                        fprintf(out,"%f\n",b);
-                    fprintf(out,"%f - %f = %f\n",a,b,a-b);
-                    fprintf(out,"\n");
-                    break;
-                }
-                case '*':
-                {
-                    fprintf(out,"Enter the first number: ");
-                        fscanf(in," %f",&a);
-                        fprintf(out,"%f\n",b);
-                    fprintf(out,"Enter the second number: ");
-                        fscanf(in," %f",&b);
-                        fprintf(out,"%f\n",b);
-                    fprintf(out,"%f * %f = %f\n",a,b,a*b);
-                    fprintf(out,"\n");
-                    break;
-                }
-                case '/':
-                {
-                    fprintf(out,"Enter the first number: ");
-                        fscanf(in," %lf",&e);
-                        fprintf(out,"%lf\n",e);
-                    fprintf(out,"Enter the second number: ");
-                        fscanf(in," %lf",&t);
-                        fprintf(out,"%lf\n",t);
-                    fprintf(out,"%lf / %lf = %lf\n",e,t,e/t);
-                    fprintf(out,"\n");
-                    break;
-                }
-                case '^':
-                {
-                    fprintf(out,"Enter the first number: ");
-                        fscanf(in," %lli",&d);
-                        fprintf(out,"%lli\n",d);
-                    fprintf(out,"Enter the second number: ");
-                        fscanf(in," %lli",&f);
-                        fprintf(out,"%lli\n",f);
-                    for (long long int i=0;i<f;i++)
-                    res=res*d;
-                    fprintf(out,"%lli^%lli = %lli\n",d,f,res);
-                    fprintf(out,"\n");
-                    break;
-                }
-                case '!':
-                {
-                    fprintf(out,"Enter a number: ");
-                    fscanf(in," %lli",&d);
-                    fprintf(out,"%lli\n",d);
-                    if (d<0)
-                        fprintf(out,"-\n");
-                    else if (d==0)
-                        fprintf(out,"0\n");
-                    if (d>0)
-                    {
-                        for (long long int i=1;i<=d;i++)
-                    {
-                        f=f*i;
-                    } 
-                        fprintf(out,"%lli! = %lli\n",d,f);
-                        fprintf(out,"\n");
-                    }
-                    break;
-                }
-                case('s'):
-                {
-                    fprintf(out,"Enter the size of the vectors: ");
-                    fscanf(in," %i",&size);
-                    fprintf(out,"%i\n",size);
-                    // Зарезервируем в нашей памяти ячейки под указатели.
-                    g = malloc(size*sizeof(int));
-                    h = malloc(size*sizeof(int));
-                    Res = malloc(size*sizeof(int));
-                    fprintf(out,"Enter the first vector:\n");
-                    // Создаём цикл,потому что нам неизвестно сколько у вектора будет значений.
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&g[i]);
-                            fprintf(out,"%f\n",g[i]);
-                        }
-                    fprintf(out,"Enter the second vector:\n");
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&h[i]);
-                            fprintf(out,"%f\n",h[i]);
-                        }
-                    fprintf(out,"The result of adding vectors:\n");
-                    for (int i=0;i<size;i++)
-                        fprintf(out,"%f + %f = %f\n",g[i],h[i],g[i]+h[i]);
-                    fprintf(out,"\n");
-                    // Очищаем ранее используемую память,чтобы она не накапливалась и ей могла пользоваться операционная система.
-                    free(g);
-                    free(h);
-                    free(Res);
-                    break;
-                }
-                // Все те же самые методы мы используем дальше,только меняем операцию между векторами.
-                case('d'):
-                {
-                    fprintf(out,"Enter the size of the vectors: ");
-                    fscanf(in," %i",&size);
-                    fprintf(out,"%i\n",size);
-                    g = malloc(size*sizeof(int));
-                    h = malloc(size*sizeof(int));
-                    Res = malloc(size*sizeof(int));
-                    fprintf(out,"Enter the first vector:\n");
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&g[i]);
-                            fprintf(out,"%f\n",g[i]);
-                        }
-                    fprintf(out,"Enter the second vector:\n");
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&h[i]);
-                            fprintf(out,"%f\n",h[i]);
-                        }
-                    fprintf(out,"Result of the vector difference:\n");
-                    for (int i=0;i<size;i++)
-                        fprintf(out,"%f - %f = %f\n",g[i],h[i],g[i]-h[i]);
-                    fprintf(out,"\n");
-                    free(g);
-                    free(h);
-                    free(Res);
-                    break;
-                }
-                case('c'):
-                {
-                    fprintf(out,"Enter the size of the vectors: ");
-                    fscanf(in," %i",&size);
-                    fprintf(out,"%i\n",size);
-                    g = malloc(size*sizeof(int));
-                    h = malloc(size*sizeof(int));
-                    Res = malloc(size*sizeof(int));
-                    fprintf(out,"Enter the first vector:\n");
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&g[i]);
-                            fprintf(out,"%f\n",g[i]);
-                        }
-                    fprintf(out,"Enter the second vector:\n");
-                    for (int i=0;i<size;i++)
-                        {
-                            fscanf(in," %f",&h[i]);
-                            fprintf(out,"%f\n",h[i]);
-                        }
-                    fprintf(out,"The result of the product of vectors:\n");
-                    for (int i=0;i<size;i++)
-                        fprintf(out,"%f * %f = %f\n",g[i],h[i],g[i]*h[i]);
-                    fprintf(out,"\n");
-                    free(g);
-                    free(h);
-                    free(Res);
-                    break;
-                }
-                // Вы могли заметить,что эти две переменные уже были описаны в начале программы,но не спешите делать поспешных выводов,
-                // данный финт ушами сделан для корректной работы операций возведения в степень и нахождения факториала числа.
-                // Смысл закдючается в том,что после каждого прохода цикла while,значение снова возвращается к 1,что позволяет избавиться от 
-                // такого свойства,как накапливание.Без повтора этих переменныъх в конце кода,нахождение,например,факториала числа 5 
-                // каждый раз будет выдавать разные ответы,так как мы не обнуляем переменные,а они сохраняют в себе предыдыдущие значения.
-                f=1;
-                res=1;
-                // Данный кусочек кода выводит строку и вводит какой-то символ,чтобы мы могли дать понять циклу while стоит ли повотрить 
-                // прохождение по коду сначала или лучше закончить выполнение программы. 
-            } 
-        }
-        fclose(in); // Данная функция закрывает используемые файлы,чтобы не тратить ресурсы компьютера.
-        fclose(out);
-        printf("Continue? (y/n):");
-        scanf(" %c",&r);
-            
-    }while (r == 'y');
-    return 0;    
+// Список для входных данных.
+struct list1 {
+	char sign, choose;
+	int size;
+	float *x, *y;
+	struct list1 *next;
+};
+
+// Список для выходных данных.
+struct list2 {
+	float *res;
+	struct list2 *res_next;
+};
+
+float* numb(char sign, float *x, float *y);
+float* vect(char sign, int size, float *a, float *b);
+float* add_numb(FILE *input, int size);
+void add_el(struct list1 *current, FILE *input);
+void res_add_el(struct list2 *res_current, struct list1 *current);
+
+int main(int argc, char *argv[]) {
+	char n = 'y';
+	char in[20], out[20];
+	FILE *input, *output;
+	struct list1 *head, *current; // Указатели на начало списка и текущий элемент.
+	struct list2 *head_res, *current_res;
+	while (n == 'y') {
+		printf("Enter the input \"name.txt\": ");
+		scanf("%s", in);
+		printf("Enter the output \"name.txt\": ");
+		scanf("%s", out);
+		input = fopen(in, "r");
+		if (feof(input) == 0) {
+			head = malloc(sizeof(struct list1)); // Память для первого элемента списка.
+			fscanf(input, " %c", &head->sign);
+			fscanf(input, " %c", &head->choose);
+			if (head->choose == 'v') {
+				fscanf(input, " %i", &head->size);
+			} else {
+				head->size = 1;
+			}
+			if (head->sign != '!') {
+				head->x = add_numb(input, head->size);
+				head->y = add_numb(input, head->size);
+			} else {
+				head->x = add_numb(input, head->size);
+				head->y = NULL;
+			}
+			current = head;
+
+			while (feof(input) == 0) { // Добавление элементов списка, пока не закончится файл.
+				add_el(current, input);
+				current = current->next;
+
+			}
+			head_res = malloc(sizeof(struct list2)); // Память для первого элемента списка для вывода.
+			current = head;
+			if (current->choose == 'v') {
+				head_res->res = vect(current->sign, current->size, current->x,
+						current->y);
+			} else {
+				head_res->res = numb(current->sign, current->x, current->y);
+			}
+			head_res->res_next = NULL;
+			current = current->next;
+			current_res = head_res;
+			while (current != NULL) { // Пока элемент списка не последниий.
+				res_add_el(current_res, current);
+				// Переустановка указателей на следующий элемент.
+				current = current->next;
+				current_res = current_res->res_next;
+			}
+			current = head;
+			current_res = head_res;
+			fclose(input);
+			output = fopen(out, "w");
+			while (current != NULL) // Запись ответа в output.
+			{
+				if (current->choose == 'v') {
+					fprintf(output, "(");
+					for (int i = 0; i < current->size; i++) {
+						fprintf(output, " %.2f", current->x[i]);
+					}
+					fprintf(output, ") %c (", current->sign);
+					for (int i = 0; i < current->size; i++) {
+						fprintf(output, " %.2f", current->y[i]);
+					}
+					fprintf(output, " ) = ");
+					if (current->sign != '*') {
+						fprintf(output, "( ");
+						for (int i = 0; i < current->size; i++) {
+							fprintf(output, "%.2f ", current_res->res[i]);
+						}
+						fprintf(output, ")\n");
+					} else {
+						fprintf(output, "%.2f\n", current_res->res[0]);
+					}
+				} else if (current->choose == 's') {
+					fprintf(output, " %.2f %c %.2f = %.2f\n", current->x[0],
+							current->y[0], current->sign, current_res->res[0]);
+				}
+				current = current->next;
+				current_res = current_res->res_next;
+			}
+			fclose(output);
+		}
+		printf("Continue? (y/n): ");
+		scanf("%s", &n);
+	}
+	return 0;
+}
+
+// Функция для операций с числами.
+float* numb(char sign, float *x, float *y) {
+	float f, S, *res_numb;
+	res_numb = malloc(sizeof(float));
+	switch (sign) {
+	case '+':
+		res_numb[0] = x[0] + y[0];
+		return res_numb;
+	case '-':
+		res_numb[0] = x[0] - y[0];
+		return res_numb;
+	case '*':
+		res_numb[0] = x[0] * y[0];
+		return res_numb;
+	case '/':
+		if (y != 0) {
+			res_numb[0] = x[0] / y[0];
+			return res_numb;
+		} else {
+			return 0;
+		}
+	case '!':
+		f = 1;
+		for (int i = 1; i <= x[0]; i++) {
+			f *= i;
+		}
+		res_numb[0] = f;
+		return res_numb;
+	case '^':
+		f = 1;
+		S = 1;
+		for (int i = 1; i <= y[0]; i++) {
+			S *= x[0];
+		}
+		res_numb[0] = S;
+		return res_numb;
+	}
+	return x;
+	return y;
+	free(x);
+	free(y);
+	free(res_numb);
+}
+
+// Функция для операций с векторами.
+float* vect(char sign, int size, float *a, float *b) {
+	float *res_vect;
+	switch (sign) {
+	case '+':
+		res_vect = malloc(size * sizeof(float));
+		for (int i = 0; i < size; i++) {
+			res_vect[i] = a[i] + b[i];
+		}
+		return res_vect;
+
+	case '-':
+		res_vect = malloc(size * sizeof(float));
+		for (int i = 0; i < size; i++) {
+			res_vect[i] = a[i] - b[i];
+		}
+		return res_vect;
+
+	case '*':
+		res_vect = malloc(sizeof(float));
+		res_vect[0] = 0;
+		for (int i = 0; i < size; i++) {
+			res_vect[0] += a[i] * b[i];
+		}
+		return res_vect;
+	}
+	return a;
+	return b;
+	free(a);
+	free(b);
+	free(res_vect);
+}
+
+// Считывание указателей, добавление чисел.
+float* add_numb(FILE *input, int size) {
+	float *numb;
+	numb = malloc(size * sizeof(float));
+	for (int i = 0; i < size; i++) {
+		fscanf(input, "%f", &numb[i]);
+	}
+	return numb;
+}
+
+// Добавление элемента списка для входных данных.
+void add_el(struct list1 *current, FILE *input) {
+	struct list1 *z = malloc(sizeof(struct list1));
+	fscanf(input, " %c", &z->sign);
+	fscanf(input, " %c", &z->choose);
+	if (z->choose == 'v') {
+		fscanf(input, " %i", &z->size);
+	} else {
+		z->size = 1;
+	}
+	if (z->sign != '!') {
+		z->x = add_numb(input, z->size);
+		z->y = add_numb(input, z->size);
+	} else {
+		z->x = add_numb(input, z->size);
+		z->y = NULL;
+	}
+	z->next = NULL; // Последний элемент списка.
+	current->next = z; // Переустановка указателя.
+}
+
+// Добавление элемента списка для выходных данных.
+void res_add_el(struct list2 *res_current, struct list1 *current) {
+	struct list2 *z_res = malloc(sizeof(struct list1));
+	if (current->choose == 'v') {
+		z_res->res = vect(current->sign, current->size, current->x, current->y);
+	} else {
+		z_res->res = numb(current->sign, current->x, current->y);
+	}
+	z_res->res_next = NULL;
+	res_current->res_next = z_res;
 }
